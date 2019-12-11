@@ -41,6 +41,17 @@ typedef struct instance Instance;
  */
 Instance new_instance(uint n, uint k);
 
+uchar* rand_prop (uint n, uint k);
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  rand_instance
+ *  Description:  return a randomized instance given the size (n) and the number of 
+ *  							colors (k).
+ * =====================================================================================
+ */
+Instance rand_instance (uint n, uint k);
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  free_instance
@@ -67,6 +78,8 @@ int is_correct (Instance a, uchar* p);
  */
 uint score (Instance a, uchar* p);
 
+
+void print_prop(uchar* p, uint n);
 
 /* 
  * ===  FUNCTION  ======================================================================

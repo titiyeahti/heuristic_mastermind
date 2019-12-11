@@ -19,7 +19,7 @@
 
 Instance new_instance(uint n, uint k)
 {
-				int i;
+				uint i;
 				Instance a;
 				a.n = n;
 				a.k = k;
@@ -41,6 +41,39 @@ Instance new_instance(uint n, uint k)
 				return a;
 }
 
+uint random(uint k)
+{
+				return (uint)(rand()/(double)RAND_MAX * (k));
+}
+
+
+uchar* rand_prop(uint n, uint k)
+{
+				uchar* prop	= malloc (sizeof(uchar)*n);
+				if ( prop==NULL ) {
+								fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+								exit (EXIT_FAILURE);
+				}
+
+				uint i;
+				for (i=0; i<n; i++)
+				{
+								prop[i] = (uchar) random(k);
+				}
+
+				return prop; 
+}
+
+Instance rand_instance(uint n, uint k)
+{
+				Instance a;
+				a.n = n;
+				a.k = k;
+
+				a.soluce = rand_prop(n, k);
+				return a;
+}
+
 void free_instance(Instance a)
 {
 				free(a.soluce);
@@ -49,7 +82,7 @@ void free_instance(Instance a)
 
 int is_correct(Instance a, uchar* p)
 {
-				int i;
+				uint i;
 
 				for (i=0; i<a.n; i++)
 				{
@@ -74,12 +107,18 @@ uint score(Instance a, uchar* p)
 				exit(EXIT_FAILURE);
 }
 
-void print_instance(Instance a)
+void print_prop(uchar* p, uint n)
 {
-				int i;
-				for (i=0; i<a.n; i++)
+				uint i;
+				for (i=0; i<n; i++)
 				{
-								printf("%d\t", a.soluce[i]);
+								printf("%d\t", p[i]);
 				}
 				printf("\n");
+}
+
+void print_instance(Instance a)
+{
+				printf("Instance (%d,%d) :\n", a.n, a.k);
+				print_prop(a.soluce, a.n);
 }
