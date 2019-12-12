@@ -64,6 +64,19 @@ uint* rand_prop(uint n, uint k)
 				return prop; 
 }
 
+uint* copy_prop(uint* prop, uint n)
+{
+				uint* res;
+
+				res	= malloc(sizeof(uint)*n);
+				if ( res==NULL ) {
+								fprintf ( stderr, "\ndynamic memory allocation failed\n" );
+								exit (EXIT_FAILURE);
+				}
+
+				return memcpy(res, prop, n*sizeof(uint));
+}
+
 Instance rand_instance(uint n, uint k)
 {
 				Instance a;

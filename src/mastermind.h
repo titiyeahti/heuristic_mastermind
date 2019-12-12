@@ -22,6 +22,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef unsigned int uint;
 
@@ -40,7 +41,11 @@ typedef struct instance Instance;
  */
 Instance new_instance(uint n, uint k);
 
+uint random(uint k);
+
 uint* rand_prop (uint n, uint k);
+
+uint* copy_prop (uint* prop, uint n);
 
 /* 
  * ===  FUNCTION  ======================================================================

@@ -31,7 +31,8 @@ void print_result(Result res, uint n)
 
 Result sim_annealing(Instance a, 
 								uint* (*neighbourg) (uint, uint, uint, uint*),
-								float (*temperature) (float, float),
+/* 								float (*temperature) (float, float),
+ */
 								float (*proba) (uint, uint, float),
 								uint max_steps,
 								float t0, 
@@ -41,14 +42,8 @@ Result sim_annealing(Instance a,
 				uint* state = rand_prop(a.n, a.k);
 				uint* gstate;
 
-				gstate = malloc(sizeof(uint)*a.n);
-				if ( gstate==NULL ) {
-								fprintf ( stderr, "\ndynamic memory allocation failed\n" );
-								exit (EXIT_FAILURE);
-				}
-
-				memcpy(gstate, state, a.n*sizeof(uint));
-
+				gstate = copy_prop(state, a.n);
+				
 				uint* nstate;
 				uint s = score(a, state);
 				uint gs = s;
@@ -61,10 +56,12 @@ Result sim_annealing(Instance a,
 								{
 												break;
 								}
-								t = temperature(t, param);
-								nstate = neighbourg(a.n, a.k, s, state);
+/* 								t = (*temperature)(t, param);
+ */
+								t = t*param;
+								nstate = (*neighbourg)(a.n, a.k, s, state);
 								ns = score(a, nstate);
-								if (ns > s || uniform(.0,.1) < proba(s, ns, t))
+								if (ns > s || uniform(.0,.1) < (*proba)(s, ns, t))
 								{
 												memcpy(state, nstate, a.n*sizeof(uint));
 												s = ns;
