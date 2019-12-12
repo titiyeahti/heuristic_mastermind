@@ -28,7 +28,7 @@ Instance new_instance(uint n, uint k)
 								fprintf (stderr, "\nnew_instance : k is too_big (max value is 255)");
 								exit(EXIT_FAILURE);
 				}
-				a.soluce	= malloc (sizeof(uchar)*n);
+				a.soluce	= malloc (sizeof(uint)*n);
 				if ( a.soluce==NULL ) {
 								fprintf ( stderr, "\ndynamic memory allocation failed\n" );
 								exit (EXIT_FAILURE);
@@ -47,9 +47,9 @@ uint random(uint k)
 }
 
 
-uchar* rand_prop(uint n, uint k)
+uint* rand_prop(uint n, uint k)
 {
-				uchar* prop	= malloc (sizeof(uchar)*n);
+				uint* prop	= malloc (sizeof(uint)*n);
 				if ( prop==NULL ) {
 								fprintf ( stderr, "\ndynamic memory allocation failed\n" );
 								exit (EXIT_FAILURE);
@@ -58,7 +58,7 @@ uchar* rand_prop(uint n, uint k)
 				uint i;
 				for (i=0; i<n; i++)
 				{
-								prop[i] = (uchar) random(k);
+								prop[i] = (uint) random(k);
 				}
 
 				return prop; 
@@ -80,7 +80,7 @@ void free_instance(Instance a)
 				a.soluce = NULL;
 }
 
-int is_correct(Instance a, uchar* p)
+int is_correct(Instance a, uint* p)
 {
 				uint i;
 
@@ -92,7 +92,7 @@ int is_correct(Instance a, uchar* p)
 				return 1;
 }
 
-uint score(Instance a, uchar* p)
+uint score(Instance a, uint* p)
 {
 				if (is_correct(a, p))
 				{
@@ -107,7 +107,7 @@ uint score(Instance a, uchar* p)
 				exit(EXIT_FAILURE);
 }
 
-void print_prop(uchar* p, uint n)
+void print_prop(uint* p, uint n)
 {
 				uint i;
 				for (i=0; i<n; i++)

@@ -24,11 +24,10 @@
 #include <stdlib.h>
 
 typedef unsigned int uint;
-typedef unsigned char uchar;
 
 struct instance {
 				uint n,k;
-				uchar* soluce;
+				uint* soluce;
 };				/* ----------  end of struct instance  ---------- */
 
 typedef struct instance Instance;
@@ -41,7 +40,7 @@ typedef struct instance Instance;
  */
 Instance new_instance(uint n, uint k);
 
-uchar* rand_prop (uint n, uint k);
+uint* rand_prop (uint n, uint k);
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -67,7 +66,7 @@ void free_instance (Instance a);
  *  Description:  returns 1 if the proposal p is coherent with the instance a
  * =====================================================================================
  */
-int is_correct (Instance a, uchar* p);
+int is_correct (Instance a, uint* p);
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -76,10 +75,9 @@ int is_correct (Instance a, uchar* p);
  *  							the proposal must be valid and coherent with a.
  * =====================================================================================
  */
-uint score (Instance a, uchar* p);
+uint score(Instance a, uint* p);
 
-
-void print_prop(uchar* p, uint n);
+void print_prop(uint* p, uint n);
 
 /* 
  * ===  FUNCTION  ======================================================================

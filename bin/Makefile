@@ -1,9 +1,9 @@
-CC = gcc -Wall -Wextra -ansi -Werror
+CC = gcc -Wall -Wextra -ansi
 SRC = ../src/
 
 all : test.out
 
-test.out : mastermind.o $(SRC)test.c
+test.out : mastermind.o metaheuristic.o $(SRC)test.c
 	$(CC) $^ -g -o $@
 
 %.o : $(SRC)%.c $(SRC)%.h

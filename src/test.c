@@ -16,6 +16,7 @@
  * =====================================================================================
  */
 #include "mastermind.h"
+#include "metaheuristic.h"
 #include	<stdlib.h>
 #include 	<time.h>
 
@@ -43,7 +44,7 @@ main ( int argc, char *argv[] )
 				}
 
 				Instance a = rand_instance(n, k);
-				uchar* p = rand_prop(n, k);
+				uint* p = rand_prop(n, k);
 
 				print_instance(a);
 
