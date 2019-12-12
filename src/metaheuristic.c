@@ -27,6 +27,7 @@ void print_result(Result res, uint n)
 {
 				printf("Nb it : %d \tScore : %d\n", res.i, res.score);
 				print_prop(res.value, n);
+				printf("\n");
 }
 
 Result sim_annealing(Instance a, 

@@ -15,10 +15,13 @@
  *
  * =====================================================================================
  */
+#include	<stdlib.h>
+#include  <stdio.h>
+#include 	<time.h>
 #include "mastermind.h"
 #include "metaheuristic.h"
-#include	<stdlib.h>
-#include 	<time.h>
+#include "neighbourg.h"
+#include "proba.h"
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -39,21 +42,37 @@ main ( int argc, char *argv[] )
 				}
 				else 
 				{
-								n = 16;
+								n = 10;
 								k = 10;
 				}
 
 				Instance a = rand_instance(n, k);
-				uint* p = rand_prop(n, k);
+				/* 				uint* p = rand_prop(n, k);
+				 * 
+				 * 				print_instance(a);
+				 * 
+				 * 				print_prop(p, n);
+				 * 
+				 * 				printf("score : %d\n", score(a, p));
+				 * 
+				 * 				free(p);
+				 */
 
 				print_instance(a);
+				printf("\n");
 
-				print_prop(p, n);
+				uint i;
+				Result res;
 
-				printf("score : %d\n", score(a, p));
+				for(i=1; i<=n; i++)
+				{
+								res = sim_annealing(a, neigh_v1, exp_law, 1000*i, 
+																(float) 10, 0.99);
+								print_result(res, n);
+								free(res.value);
+				}
+
 
 				free_instance(a);
-				free(p);
-				
 				return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
