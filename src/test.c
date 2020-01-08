@@ -76,13 +76,18 @@ main ( int argc, char *argv[] )
 /* 								printf("line : %d\n", __LINE__);
  */
 								Instance a = rand_instance(n, n);
-							
+
 								t1 = clock();
 								res = one_plus_one(a, 1/(float)n);
 								t2 = clock();
 								t_one += (t2 - t1)/(float)CLOCKS_PER_SEC;
 								m_one += res.i/(float)k;
 
+								if (i == 1)
+								{
+												print_instance(a);
+												print_result(res, n);
+								}
 								free(res.value);
 
 								t1 = clock();
@@ -90,6 +95,10 @@ main ( int argc, char *argv[] )
 								t2 = clock();
 								t_rls += (t2 - t1)/(float)CLOCKS_PER_SEC;
 								m_rls += res.i/(float)k;
+								if (i == 1)
+								{
+												print_result(res,n);
+								}
 
 								free(res.value);
 								free_instance(a);
