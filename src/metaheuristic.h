@@ -32,7 +32,11 @@ typedef struct result Result;
 
 void print_result(Result res, uint n);
 
- /* simulated annealing */
+Result one_plus_one(Instance a, float p);
+
+Result randomized_local_search(Instance a);
+
+/* simulated annealing */
 
 
 /* 

@@ -47,6 +47,8 @@ uint* rand_prop (uint n, uint k);
 
 uint* copy_prop (uint* prop, uint n);
 
+void copy_to_prop(uint* src, uint* target, uint n);
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  rand_instance

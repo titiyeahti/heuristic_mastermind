@@ -77,6 +77,11 @@ uint* copy_prop(uint* prop, uint n)
 				return memcpy(res, prop, n*sizeof(uint));
 }
 
+void copy_to_prop(uint* src, uint* target, uint n)
+{
+				memcpy(target, src, n*sizeof(uint));
+}
+
 Instance rand_instance(uint n, uint k)
 {
 				Instance a;

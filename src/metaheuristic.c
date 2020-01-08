@@ -20,7 +20,17 @@
 
 float uniform(float a, float b)
 {
-				return (rand()/(double) RAND_MAX)*(b-a);
+				return a + (rand()/(double) RAND_MAX)*(b-a);
+}
+
+float uniform01(void)
+{
+				return (rand()/(double) RAND_MAX);
+}
+
+void free_result(Result res)
+{
+				free(res.value);
 }
 
 void print_result(Result res, uint n)
@@ -28,6 +38,82 @@ void print_result(Result res, uint n)
 				printf("Nb it : %d \tScore : %d\n", res.i, res.score);
 				print_prop(res.value, n);
 				printf("\n");
+}
+
+uint rand_with_forb(uint k, uint forb)
+{
+				uint res = random(k-1);
+				if (res >= forb)
+								res ++;
+				return res;
+}
+
+Result one_plus_one(Instance a, float p)
+{
+				uint i = 0;
+				uint j;
+				uint* best = rand_prop(a.n, a.k);
+				uint s = score(a, best);
+
+				/* just allocating memory */
+				uint* prop = rand_prop(a.n, a.k);
+				uint ps;
+				while(s<a.n)
+				{
+								memcpy(prop, best, a.n*sizeof(uint));
+								for(j=0; j<a.n; j++)
+								{
+												if(uniform01()<=p)
+																prop[j] = rand_with_forb(a.k, best[j]);
+								}
+								ps = score(a, prop);
+								if (ps>s)
+								{
+												memcpy(best, prop, a.n*sizeof(uint));
+												s = ps;
+								}
+								i++;
+				}
+
+				Result res;
+				res.i = i;
+				res.value = best;
+				res.score = s;
+
+				return res;
+}
+
+Result randomized_local_search(Instance a)
+{
+				uint j;
+				uint i = 0;
+				uint* best = rand_prop(a.n, a.k);
+				uint s = score(a, best);
+
+				/* just allocating memory */
+				uint* prop = rand_prop(a.n, a.k);
+				uint ps;
+				j=0;
+				while(s<a.n)
+				{
+								memcpy(prop, best, a.n*sizeof(uint));
+								uint j = random(a.n);
+								prop[j] = rand_with_forb(a.k, best[j]);
+								ps = score(a, prop);
+								if (ps>s)
+								{
+												memcpy(best, prop, a.n*sizeof(uint));
+												s = ps;
+								}
+								i++;
+				}
+
+				Result res;
+				res.i = i;
+				res.value = best;
+				res.score = s;
+
+				return res;
 }
 
 Result sim_annealing(Instance a, 
