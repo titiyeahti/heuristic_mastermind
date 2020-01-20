@@ -55,6 +55,11 @@ Result one_plus_one(Instance a, float p)
 				uint* best = rand_prop(a.n, a.k);
 				uint s = score(a, best);
 
+				Result res;
+				res.value = (uint*) malloc(a.n*sizeof(uint));
+				for(j=0; j<s; j++)
+								res.value[s-1] = i;
+
 				/* just allocating memory */
 				uint* prop = rand_prop(a.n, a.k);
 				uint ps;
@@ -70,48 +75,55 @@ Result one_plus_one(Instance a, float p)
 								if (ps>s)
 								{
 												memcpy(best, prop, a.n*sizeof(uint));
+												for(j=s-1; j<ps; j++)
+																res.value[ps-1] = i;
 												s = ps;
 								}
 								i++;
 				}
-
-				Result res;
 				res.i = i;
-				res.value = best;
 				res.score = s;
+				free(prop);
+				free(best);
 
 				return res;
 }
 
 Result randomized_local_search(Instance a)
 {
-				uint j;
 				uint i = 0;
+				uint j;
 				uint* best = rand_prop(a.n, a.k);
 				uint s = score(a, best);
 
+				Result res;
+				res.value = (uint*) malloc(a.n*sizeof(uint));
+				
+				for(j=0; j<s; j++)
+								res.value[s-1] = i;
+				
 				/* just allocating memory */
 				uint* prop = rand_prop(a.n, a.k);
 				uint ps;
-				j=0;
 				while(s<a.n)
 				{
 								memcpy(prop, best, a.n*sizeof(uint));
-								uint j = random(a.n);
+								j = random(a.n);
 								prop[j] = rand_with_forb(a.k, best[j]);
 								ps = score(a, prop);
 								if (ps>s)
 								{
 												memcpy(best, prop, a.n*sizeof(uint));
+												for(j=s-1; j<ps; j++)
+																res.value[ps-1] = i;
 												s = ps;
 								}
 								i++;
 				}
-
-				Result res;
 				res.i = i;
-				res.value = best;
 				res.score = s;
+				free(prop);
+				free(best);
 
 				return res;
 }

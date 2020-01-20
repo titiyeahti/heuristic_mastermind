@@ -83,32 +83,24 @@ main ( int argc, char *argv[] )
 								t_one += (t2 - t1)/(float)CLOCKS_PER_SEC;
 								m_one += res.i/(float)k;
 
-								if (i == 1)
-								{
-												print_instance(a);
-												print_result(res, n);
-								}
 								free(res.value);
+
 
 								t1 = clock();
 								res = randomized_local_search(a);
 								t2 = clock();
 								t_rls += (t2 - t1)/(float)CLOCKS_PER_SEC;
 								m_rls += res.i/(float)k;
-								if (i == 1)
-								{
-												print_result(res,n);
-								}
 
 								free(res.value);
+
 								free_instance(a);
 				}
 
-				printf("number of runs = %d, n = %d\n\n", k, n);
-				printf("\tnumber of calls \t time \n");
-				printf("rls\t%f \t\t\t %f\n", m_rls, t_rls);
-				printf("one\t%f \t\t\t %f\n", m_one, t_one);
-
+/* 				printf("#runs\t n\t t_rls\t t_one\t m_rls\t m_one\n");
+ * 
+ * 				printf("%d\t %d\t %05f\t %05f\t %05f\t %05f\t\n", k, n, t_rls, t_one, m_rls, m_one);
+ */
 
 				return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
