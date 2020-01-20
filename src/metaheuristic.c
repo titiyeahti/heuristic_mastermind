@@ -48,7 +48,24 @@ uint rand_with_forb(uint k, uint forb)
 				return res;
 }
 
-Result one_plus_one(Instance a, float p)
+void one(uint* prop, uint* best, float p, Instance a)
+{
+				uint j;
+				for(j=0; j < a.n; j++)
+				{
+								if(uniform01()<=p)
+												prop[j] = rand_with_forb(a.k, best[j]);
+				}
+}
+
+void rls(uint* prop, uint* best, float p, Instance a)
+{
+				uint j = (uint) p;
+				j = random(a.n);
+				prop[j] = rand_with_forb(a.k, best[j]);
+}
+
+Result template(Instance a, float p, void (*modif) (uint*, uint*, float, Instance))
 {
 				uint i = 0;
 				uint j;
@@ -58,28 +75,24 @@ Result one_plus_one(Instance a, float p)
 				Result res;
 				res.value = (uint*) malloc(a.n*sizeof(uint));
 				for(j=0; j<s; j++)
-								res.value[s-1] = i;
+								res.value[j] = i;
 
 				/* just allocating memory */
 				uint* prop = rand_prop(a.n, a.k);
 				uint ps;
 				while(s<a.n)
 				{
+								i++;
 								memcpy(prop, best, a.n*sizeof(uint));
-								for(j=0; j<a.n; j++)
-								{
-												if(uniform01()<=p)
-																prop[j] = rand_with_forb(a.k, best[j]);
-								}
+								modif(prop, best, p, a);
 								ps = score(a, prop);
 								if (ps>s)
 								{
 												memcpy(best, prop, a.n*sizeof(uint));
-												for(j=s-1; j<ps; j++)
-																res.value[ps-1] = i;
+												for(j=s; j<ps; j++)
+																res.value[j] = i;
 												s = ps;
 								}
-								i++;
 				}
 				res.i = i;
 				res.score = s;
@@ -89,43 +102,14 @@ Result one_plus_one(Instance a, float p)
 				return res;
 }
 
+Result one_plus_one(Instance a, float p)
+{
+				return template(a, p, &one);
+}
+
 Result randomized_local_search(Instance a)
 {
-				uint i = 0;
-				uint j;
-				uint* best = rand_prop(a.n, a.k);
-				uint s = score(a, best);
-
-				Result res;
-				res.value = (uint*) malloc(a.n*sizeof(uint));
-				
-				for(j=0; j<s; j++)
-								res.value[s-1] = i;
-				
-				/* just allocating memory */
-				uint* prop = rand_prop(a.n, a.k);
-				uint ps;
-				while(s<a.n)
-				{
-								memcpy(prop, best, a.n*sizeof(uint));
-								j = random(a.n);
-								prop[j] = rand_with_forb(a.k, best[j]);
-								ps = score(a, prop);
-								if (ps>s)
-								{
-												memcpy(best, prop, a.n*sizeof(uint));
-												for(j=s-1; j<ps; j++)
-																res.value[ps-1] = i;
-												s = ps;
-								}
-								i++;
-				}
-				res.i = i;
-				res.score = s;
-				free(prop);
-				free(best);
-
-				return res;
+				return template(a, 0., &rls);
 }
 
 Result sim_annealing(Instance a, 

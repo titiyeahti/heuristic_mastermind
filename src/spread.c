@@ -70,15 +70,35 @@ main ( int argc, char *argv[] )
 				fp = fopen("../data/One_spread", "w");
 				fq = fopen("../data/RLS_spread", "w");
 
+				uint min_one, min_rls,
+								max_one, max_rls;
+				float mean_one, mean_rls;
+
 				for(i=0; i<n; i++)
 				{
+								min_one = one[0].value[i];
+								max_one = one[0].value[i];
+								min_rls = rls[0].value[i];
+								max_rls = rls[0].value[i];
+
+								mean_one = 0;
+								mean_rls = 0;
+
 								for(j=0; j<k; j++)
 								{
 												fprintf(fp, "%d ", rls[j].value[i]);
 												fprintf(fq, "%d ", one[j].value[i]);
+												
+												max_one = MAX(max_one, one[j].value[i]);
+												min_one = MIN(min_one, one[j].value[i]);
+												max_rls = MAX(max_rls, rls[j].value[i]);
+												min_rls = MIN(min_rls, rls[j].value[i]);
+
+												mean_one += one[j].value[i] / (float) k;
+												mean_rls += rls[j].value[i] / (float) k;
 								}
-								fprintf(fp, "\n");
-								fprintf(fq, "\n");
+								fprintf(fp, "%d %d %f\n", min_rls, max_rls, mean_rls);
+								fprintf(fq, "%d %d %f\n", min_one, max_one, mean_one);
 				}
 
 				for(j=0; j<k; j++)
