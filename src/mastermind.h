@@ -61,6 +61,7 @@ void copy_to_prop(uint* src, uint* target, uint n);
  */
 Instance rand_instance (uint n, uint k);
 
+
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  free_instance
@@ -68,6 +69,82 @@ Instance rand_instance (uint n, uint k);
  * =====================================================================================
  */
 void free_instance (Instance a);
+
+
+
+/*-----------------------------------------------------------------------------
+ *  Mutations
+ *-----------------------------------------------------------------------------*/
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  binom_mutation
+ *  Description:  each case has a proba p to be replaced by a random number in [0,k[ 
+ *  							different from the precedent one.
+ *  							TODO
+ * =====================================================================================
+ */
+void binom_mutation(uint* src, uint* dest, float p, uint k, uint n);
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  flip_one_slot
+ *  Description:  The target contain gloally the same thing as the src execpting for one
+ *  							slot.
+ *  							TODO
+ * =====================================================================================
+ */
+void flip_one_slot(uint* src, uint* dest, uint spot, uint k, uint n);
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  flip_many_slots
+ *  Description:  similar to flip_one_slot but for many ones.
+ *  							TODO
+ * =====================================================================================
+ */
+void flip_many_slots(uint* src, uint* dest, uint many, uint k, uint n);
+
+
+
+/*-----------------------------------------------------------------------------
+ *  Crossovers
+ *-----------------------------------------------------------------------------*/
+
+
+struct prop_score {
+				uint* prop;
+				uint score;
+};				/* ----------  end of struct prop_score  ---------- */
+
+typedef struct prop_score Prop_score;
+
+typedef Prop_score* Prop_score_p;
+
+void quicksort(Prop_score_p* population, uint size);
+
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  fixpoint_crossover
+ *  Description:  take points from father until spot, then points from mother.
+ *  							TODO
+ * =====================================================================================
+ */
+void fixpoint_crossover(uint* son, uint* father, uint* mother, uint spot, uint n);
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  random_crossover
+ *  Description:  each point of the son have a proba b to come from the father.
+ *  							TODO
+ * =====================================================================================
+ */
+void random_crossover(uint* son, uint* father, uint* mother, float p, uint n);
 
 
 /* 
@@ -96,5 +173,7 @@ void print_prop(uint* p, uint n);
  * =====================================================================================
  */
 void print_instance (Instance a);
+
+
 
 #endif   /* ----- #ifndef mastermind_INC  ----- */

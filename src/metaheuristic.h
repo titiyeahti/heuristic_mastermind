@@ -36,6 +36,23 @@ Result one_plus_one(Instance a, float p);
 
 Result randomized_local_search(Instance a);
 
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  genetic_algo
+ *  Description:  a should be an instance of mastermind, lamba is the number of newborns
+ *  							at each generation, mu is the size of the generations,
+ *  							mutation(uint* dest, uint* src, uint k, uint n),
+ *  							crossover(uint* son, uint* father, uint* mother, uint n).
+ *  							TODO
+ * =====================================================================================
+ */
+
+/* the new generation is calculated directly in the table then all the new scores
+ * are computed and finally the table is sorted*/
+Result genetic_algo(Instance a, uint lambda, uint mu,
+								void (* mutation)(uint*, uint*, uint, uint),
+								void (* crossover)(uint*, uint*, uint*, uint))
 /* simulated annealing */
 
 

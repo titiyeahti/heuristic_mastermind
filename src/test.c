@@ -77,13 +77,14 @@ main ( int argc, char *argv[] )
  */
 								Instance a = rand_instance(n, n);
 
-								t1 = clock();
-								res = one_plus_one(a, 1/(float)n);
-								t2 = clock();
-								t_one += (t2 - t1)/(float)CLOCKS_PER_SEC;
-								m_one += res.i/(float)k;
+/* 								t1 = clock();
+ * 								res = one_plus_one(a, 1/(float)n);
+ * 								t2 = clock();
+ * 								t_one += (t2 - t1)/(float)CLOCKS_PER_SEC;
+ * 								m_one += res.i/(float)k;
 
 								free(res.value);
+ */
 
 
 								t1 = clock();
@@ -97,10 +98,10 @@ main ( int argc, char *argv[] )
 								free_instance(a);
 				}
 
-/* 				printf("#runs\t n\t t_rls\t t_one\t m_rls\t m_one\n");
- * 
- * 				printf("%d\t %d\t %05f\t %05f\t %05f\t %05f\t\n", k, n, t_rls, t_one, m_rls, m_one);
- */
+				printf("#runs\t n\t t_rls\t t_one\t m_rls\t m_one\n");
+
+				printf("%d\t %d\t %05f\t %05f\t %05f\t %05f\t\n", k, n, t_rls, t_one, m_rls, m_one);
+
 
 				return EXIT_SUCCESS;
 }				/* ----------  end of function main  ---------- */
