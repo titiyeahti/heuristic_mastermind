@@ -92,6 +92,89 @@ Instance rand_instance(uint n, uint k)
 				return a;
 }
 
+
+/*-----------------------------------------------------------------------------
+ *  MUTATIONS
+ *-----------------------------------------------------------------------------*/
+
+float uniform(float a, float b)
+{
+				return a + (rand()/(double) RAND_MAX)*(b-a);
+}
+
+float uniform01(void)
+{
+				return (rand()/(double) RAND_MAX);
+}
+
+uint rand_with_forb(uint k, uint forb)
+{
+				uint res = random(k-1);
+				if (res >= forb)
+								res ++;
+				return res;
+}
+
+void binom_mutation(uint* src, uint* dest, float p, uint k, uint n)
+{
+				uint j;
+				copy_to_prop(src, dest, n);
+				for(j=0; j < n; j++)
+				{
+								if(uniform01()<=p)
+												dest[j] = rand_with_forb(k, src[j]);
+				}
+
+}
+
+void flip_one_slot(uint* src, uint* dest, uint spot, uint k, uint n)
+{
+				copy_to_prop(src, dest, n);
+				dest[spot] = rand_with_forb(k, src[spot]);
+}
+
+void flip_many_slots(uint* src, uint* dest, uint many, uint k, uint n)
+{
+				copy_to_prop(src, dest, n);
+				uint spot;
+				uint i;
+				for(i=0; i<many; i++)
+				{
+								spot = random(n);
+								dest[spot] = rand_with_forb(k, src[spot]);
+				}
+							
+}
+
+
+/*-----------------------------------------------------------------------------
+ *  Crossovers
+ *-----------------------------------------------------------------------------*/
+
+void fixpoint_crossover(uint* son, uint* father, uint* mother, uint spot, uint n)
+{
+				copy_to_prop(father, son, spot);
+				copy_to_prop(mother + spot, son + spot,
+												n-spot);
+}
+
+void random_crossover(uint* son, uint* father, uint* mother, float p, uint n)
+{
+				uint i;
+				for(i=0; i<n; i++)
+				{
+								float f = uniform01();
+								if (f<p)
+								{
+												son[i] = father[i];
+								}
+								else 
+								{
+												son[i] = mother[i];
+								}
+				}
+}
+
 void free_instance(Instance a)
 {
 				free(a.soluce);
@@ -132,7 +215,7 @@ void print_prop(uint* p, uint n)
 				{
 								printf("%d\t", p[i]);
 				}
-				printf("\n");
+				printf("\n\n");
 }
 
 void print_instance(Instance a)
