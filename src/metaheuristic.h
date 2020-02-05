@@ -42,12 +42,12 @@ void res_update(Result* res, uint count, uint score);
  *  Description:  a should be an instance of mastermind, lamba is the number of newborns
  *  							at each generation, mu is the size of the generations, c is the 
  *  							crossover proba, 
- *  							mutation(uint* dest, uint* src, uint k, uint n),
+ *  							mutation(uint* dest, uint* src, uint score, uint k, uint n),
  *  							crossover(uint* son, uint* father, uint* mother, uint n).
  * =====================================================================================
  */
 Result genetic_algo(Instance a, uint lambda, uint mu, float c,
-								void (* mutation)(uint*, uint*, uint, uint),
+								void (* mutation)(uint*, uint*, uint, uint, uint),
 								void (* crossover)(uint*, uint*, uint*, uint));
 
 

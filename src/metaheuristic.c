@@ -58,9 +58,8 @@ void res_update(Result* res, uint count, uint score)
 				}
 }
 
-/* CHECK MEMORY HERE WARNING */
 Result genetic_algo(Instance a, uint lambda, uint mu, float c,
-								void (* mutation)(uint*, uint*, uint, uint),
+								void (* mutation)(uint*, uint*, uint,  uint, uint),
 								void (* crossover)(uint*, uint*, uint*, uint))
 {
 				Prop_score_p* gen;
@@ -90,11 +89,13 @@ Result genetic_algo(Instance a, uint lambda, uint mu, float c,
 												else
 												{
 																p = random(mu);
-																mutation(gen[p]->prop, gen[i]->prop, a.k, a.n);
+																mutation(gen[p]->prop, gen[i]->prop, 
+																								gen[p]->score, a.k, a.n);
 																gen[i] -> score = score(a, gen[i]->prop);
 												}
 												count++;
 								}
+
 								quicksort(gen, lambda + mu);
 								res_update(&res, count, gen[0]->score);
 				}

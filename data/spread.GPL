@@ -1,3 +1,0 @@
-set title 'Convergence de 1+1 avec n = 400 et p = 1/n'
-set grid
-plot "One_spread"
