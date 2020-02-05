@@ -85,6 +85,8 @@ Result genetic_algo(Instance a, uint lambda, uint mu, float c,
 																m = rand_with_forb(mu, p);
 																crossover(gen[i]->prop, gen[p]->prop, 
 																								gen[m]->prop, a.n);
+/* 																printf("%f %f %d %d %d", c, test, i, p, m);
+ */
 												}
 												else
 												{

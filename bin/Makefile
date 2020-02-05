@@ -2,7 +2,10 @@ CC = gcc -Wall -Wextra -ansi
 SRC = ../src/
 LIBS = -lm
 
-all : test.out rls.out ea.out
+all : test.out rls.out ea.out ga.out
+
+ga.out : mastermind.o metaheuristic.o $(SRC)ga.c
+	$(CC) $^ -g -o $@ $(LIBS)
 
 ea.out : mastermind.o metaheuristic.o $(SRC)ea.c
 	$(CC) $^ -g -o $@ $(LIBS)

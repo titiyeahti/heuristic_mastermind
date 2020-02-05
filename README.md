@@ -21,6 +21,7 @@ Try to analyze different heuristic algorithms for the resolution of the mastermi
 	+ the structure manipultation code is mainly documented in `mastermind.h`;
 	+ the algo is in `metaheuristic.c` and his doc in the corresponding header file.
 - `data/`, the data for plots AND the gnuplot code used for the plots;
-- `plots/`, the corresponding plots in png.
+- `plots/`, the corresponding plots in png;
+- `rapport.pdf` a short report in french with lots of images :).
 
 
