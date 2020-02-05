@@ -26,6 +26,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+
+
+/*-----------------------------------------------------------------------------
+ *  Instances
+ *-----------------------------------------------------------------------------*/
 
 typedef unsigned int uint;
 
@@ -43,14 +49,6 @@ typedef struct instance Instance;
  * =====================================================================================
  */
 Instance new_instance(uint n, uint k);
-
-uint random(uint k);
-
-uint* rand_prop (uint n, uint k);
-
-uint* copy_prop (uint* prop, uint n);
-
-void copy_to_prop(uint* src, uint* target, uint n);
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -70,10 +68,45 @@ Instance rand_instance (uint n, uint k);
  */
 void free_instance (Instance a);
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  print_instance
+ *  Description:  prints the instance a.
+ * =====================================================================================
+ */
+void print_instance (Instance a);
+
+
+
 
 
 /*-----------------------------------------------------------------------------
- *  Mutations
+ *  Proba functions
+ *-----------------------------------------------------------------------------*/
+uint random(uint k);
+
+float uniform(float a, float b);
+
+float uniform01(void);
+
+uint rand_with_forb(uint k, uint forb);
+
+
+/*-----------------------------------------------------------------------------
+ *  Prop - base functions
+ *-----------------------------------------------------------------------------*/
+uint* rand_prop (uint n, uint k);
+
+uint* copy_prop (uint* prop, uint n);
+
+void copy_to_prop(uint* src, uint* target, uint n);
+
+void print_prop(uint* p, uint n);
+
+
+
+/*-----------------------------------------------------------------------------
+ *  Prop - Mutations
  *-----------------------------------------------------------------------------*/
 
 /* 
@@ -105,11 +138,9 @@ void flip_one_slot(uint* src, uint* dest, uint spot, uint k, uint n);
 void flip_many_slots(uint* src, uint* dest, uint many, uint k, uint n);
 
 
-
 /*-----------------------------------------------------------------------------
- *  Crossovers
+ *  Prop_score
  *-----------------------------------------------------------------------------*/
-
 
 struct prop_score {
 				uint* prop;
@@ -120,16 +151,29 @@ typedef struct prop_score Prop_score;
 
 typedef Prop_score* Prop_score_p;
 
-/* TODO */
+Prop_score_p* gen_init(Instance a, uint size);
+
+void gen_free(Prop_score_p* gen, uint size);
+
+void print_gen(Prop_score_p* gen, uint size);
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  quicksort
+ *  Description:  on spot implementation of the quicksort for Prop_score_p objects
+ * =====================================================================================
+ */
 void quicksort(Prop_score_p* population, uint size);
 
 
+/*-----------------------------------------------------------------------------
+ *  Prop - Crossovers
+ *-----------------------------------------------------------------------------*/
 
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  fixpoint_crossover
  *  Description:  take points from father until spot, then points from mother.
- *  							TODO
  * =====================================================================================
  */
 void fixpoint_crossover(uint* son, uint* father, uint* mother, uint spot, uint n);
@@ -139,11 +183,15 @@ void fixpoint_crossover(uint* son, uint* father, uint* mother, uint spot, uint n
  * ===  FUNCTION  ======================================================================
  *         Name:  random_crossover
  *  Description:  each point of the son have a proba b to come from the father.
- *  							TODO
  * =====================================================================================
  */
 void random_crossover(uint* son, uint* father, uint* mother, float p, uint n);
 
+
+
+/*-----------------------------------------------------------------------------
+ *  Miscellanous
+ *-----------------------------------------------------------------------------*/
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -161,17 +209,6 @@ int is_correct (Instance a, uint* p);
  * =====================================================================================
  */
 uint score(Instance a, uint* p);
-
-void print_prop(uint* p, uint n);
-
-/* 
- * ===  FUNCTION  ======================================================================
- *         Name:  print_instance
- *  Description:  prints the instance a.
- * =====================================================================================
- */
-void print_instance (Instance a);
-
 
 
 #endif   /* ----- #ifndef mastermind_INC  ----- */

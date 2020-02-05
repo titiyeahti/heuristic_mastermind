@@ -18,15 +18,6 @@
 
 #include "metaheuristic.h"
 
-float uniform(float a, float b)
-{
-				return a + (rand()/(double) RAND_MAX)*(b-a);
-}
-
-float uniform01(void)
-{
-				return (rand()/(double) RAND_MAX);
-}
 
 void free_result(Result res)
 {
@@ -40,128 +31,76 @@ void print_result(Result res, uint n)
 				printf("\n");
 }
 
-uint rand_with_forb(uint k, uint forb)
+Result res_init(uint count, uint score, uint n)
 {
-				uint res = random(k-1);
-				if (res >= forb)
-								res ++;
-				return res;
-}
-
-void one(uint* prop, uint* best, float p, Instance a)
-{
-				uint j;
-				for(j=0; j < a.n; j++)
-				{
-								if(uniform01()<=p)
-												prop[j] = rand_with_forb(a.k, best[j]);
-				}
-}
-
-void rls(uint* prop, uint* best, float p, Instance a)
-{
-				uint j = (uint) p;
-				j = random(a.n);
-				prop[j] = rand_with_forb(a.k, best[j]);
-}
-
-Result template(Instance a, float p, void (*modif) (uint*, uint*, float, Instance))
-{
-				uint i = 0;
-				uint j;
-				uint* best = rand_prop(a.n, a.k);
-				uint s = score(a, best);
-
 				Result res;
-				res.value = (uint*) malloc(a.n*sizeof(uint));
-				for(j=0; j<s; j++)
-								res.value[j] = i;
-
-				/* just allocating memory */
-				uint* prop = rand_prop(a.n, a.k);
-				uint ps;
-				while(s<a.n)
-				{
-								i++;
-								memcpy(prop, best, a.n*sizeof(uint));
-								modif(prop, best, p, a);
-								ps = score(a, prop);
-								if (ps>s)
-								{
-												memcpy(best, prop, a.n*sizeof(uint));
-												for(j=s; j<ps; j++)
-																res.value[j] = i;
-												s = ps;
-								}
-				}
-				res.i = i;
-				res.score = s;
-				free(prop);
-				free(best);
+				uint j;
+				res.value = (uint*) malloc(n*sizeof(uint));
+				for(j=0; j<score; j++)
+								res.value[j] = count;
+				res.score = score;
 
 				return res;
 }
 
-Result one_plus_one(Instance a, float p)
+void res_update(Result* res, uint count, uint score)
 {
-				return template(a, p, &one);
+				uint j;
+				if (score > res->score)
+				{
+								for (j=res->score; j<score; j++)
+								{
+												res->value[j] = count;
+								}
+
+								res->score = score;
+								res->i = count;
+				}
 }
 
-Result randomized_local_search(Instance a)
+/* CHECK MEMORY HERE WARNING */
+Result genetic_algo(Instance a, uint lambda, uint mu, float c,
+								void (* mutation)(uint*, uint*, uint, uint),
+								void (* crossover)(uint*, uint*, uint*, uint))
 {
-				return template(a, 0., &rls);
-}
-
-Result sim_annealing(Instance a, 
-								uint* (*neighbourg) (uint, uint, uint, uint*),
-/* 								float (*temperature) (float, float),
- */
-								float (*proba) (uint, uint, float),
-								uint max_steps,
-								float t0, 
-								float param)
-{
-				uint i;
-				uint* state = rand_prop(a.n, a.k);
-				uint* gstate;
-
-				gstate = copy_prop(state, a.n);
+				Prop_score_p* gen;
+				Result res;
+				uint i, count;
+				uint p, m;
+				float test;
+				count = 0;
 				
-				uint* nstate;
-				uint s = score(a, state);
-				uint gs = s;
+				gen = gen_init(a, lambda + mu);	
+				quicksort(gen, mu);
 
-				uint ns;
-				float t = t0;
-				for(i=0; i<max_steps; i++)
+				res = res_init(count, gen[0]->score, a.n);
+
+				while (gen[0]->score < a.n)
 				{
-								if (s == a.n)
+								for(i=mu; i<mu+lambda; i++)
 								{
-												break;
-								}
-/* 								t = (*temperature)(t, param);
- */
-								t = t*param;
-								nstate = (*neighbourg)(a.n, a.k, s, state);
-								ns = score(a, nstate);
-								if (ns > s || uniform(.0,.1) < (*proba)(s, ns, t))
-								{
-												memcpy(state, nstate, a.n*sizeof(uint));
-												s = ns;
-												if (s > gs)
+												test = uniform01();
+												if (test < c)
 												{
-																gs = s;
-																memcpy(gstate, state, a.n*sizeof(uint));
+																p = random(mu);
+																m = rand_with_forb(mu, p);
+																crossover(gen[i]->prop, gen[p]->prop, 
+																								gen[m]->prop, a.n);
 												}
+												else
+												{
+																p = random(mu);
+																mutation(gen[p]->prop, gen[i]->prop, a.k, a.n);
+																gen[i] -> score = score(a, gen[i]->prop);
+												}
+												count++;
 								}
-								free(nstate);
+								quicksort(gen, lambda + mu);
+								res_update(&res, count, gen[0]->score);
 				}
 
-				Result res;
-				res.i = i;
-				res.score = gs;
-				res.value = gstate;
-
+				gen_free(gen, lambda + mu);
 				return res;
-};
+}
+
 

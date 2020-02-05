@@ -150,6 +150,83 @@ void flip_many_slots(uint* src, uint* dest, uint many, uint k, uint n)
 /*-----------------------------------------------------------------------------
  *  Crossovers
  *-----------------------------------------------------------------------------*/
+Prop_score_p* gen_init(Instance a, uint size)
+{
+				Prop_score_p* gen;
+				uint i;
+				
+				gen = malloc(sizeof(Prop_score_p)*size);
+				for(i = 0; i < size; i++)
+				{
+								gen[i] = malloc(sizeof(Prop_score));
+				}
+				
+				for(i = 0; i < size; i++)
+				{
+								gen[i]->prop = rand_prop(a.n, a.k);
+								gen[i]->score = score(a, gen[i]->prop);
+				}
+
+				return gen;
+}
+
+void gen_free(Prop_score_p* gen, uint size)
+{
+				uint i;
+				for (i=0; i<size; i++)
+				{
+								free(gen[i]);
+				}
+
+				free(gen);
+
+}
+
+void print_gen(Prop_score_p* pop, uint size)
+{
+				uint i;
+				for (i=0; i<size; i++)
+				{
+								printf("%d ", pop[i]->score);
+				}
+				printf("\n");
+}
+
+/* decreasing */
+void quicksort(Prop_score_p* population, uint size)
+{
+				if (size > 0)
+				{
+								/* partitionning */
+								uint i;
+								uint j;
+								uint sp, s;
+								Prop_score_p temp;
+
+								sp = population[size-1]->score;
+								j=0;
+
+								for (i=0; i<size-1; i++)
+								{
+												s = population[i]->score;
+												if (s > sp)
+												{				
+																temp = population[j];
+																population[j] = population[i];
+																population[i] = temp;
+																j++;
+												}
+								}
+								/* at least as big as te pivot */
+								/*replacing the pivot */
+								temp = population[j];
+								population[j] = population[size-1];
+								population[size-1] = temp;
+
+								quicksort(population, j);
+								quicksort(population+j+1, size-j-1);
+				}
+}
 
 void fixpoint_crossover(uint* son, uint* father, uint* mother, uint spot, uint n)
 {

@@ -32,28 +32,23 @@ typedef struct result Result;
 
 void print_result(Result res, uint n);
 
-Result one_plus_one(Instance a, float p);
+Result res_init(uint count, uint score, uint n);
 
-Result randomized_local_search(Instance a);
-
+void res_update(Result* res, uint count, uint score);
 
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  genetic_algo
  *  Description:  a should be an instance of mastermind, lamba is the number of newborns
- *  							at each generation, mu is the size of the generations,
+ *  							at each generation, mu is the size of the generations, c is the 
+ *  							crossover proba, 
  *  							mutation(uint* dest, uint* src, uint k, uint n),
  *  							crossover(uint* son, uint* father, uint* mother, uint n).
- *  							TODO
  * =====================================================================================
  */
-
-/* the new generation is calculated directly in the table then all the new scores
- * are computed and finally the table is sorted*/
-Result genetic_algo(Instance a, uint lambda, uint mu,
+Result genetic_algo(Instance a, uint lambda, uint mu, float c,
 								void (* mutation)(uint*, uint*, uint, uint),
-								void (* crossover)(uint*, uint*, uint*, uint))
-/* simulated annealing */
+								void (* crossover)(uint*, uint*, uint*, uint));
 
 
 /* 
@@ -76,14 +71,13 @@ Result genetic_algo(Instance a, uint lambda, uint mu,
  * =====================================================================================
  */
 
-Result sim_annealing(Instance a, 
-								uint* (*neighbourg) (uint, uint, uint, uint*),
-/* 								float (*temperature) (float, float),
+/* Result sim_annealing(Instance a, 
+ * 								uint* (*neighbourg) (uint, uint, uint, uint*),
+ * 								float (*proba) (uint, uint, float),
+ * 								uint max_steps,
+ * 								float t0,
+ * 								float param);
  */
-								float (*proba) (uint, uint, float),
-								uint max_steps,
-								float t0,
-								float param);
 
 #endif   /* ----- #ifndef metaheuristic_INC  ----- */
 
